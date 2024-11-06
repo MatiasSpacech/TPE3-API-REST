@@ -1,29 +1,28 @@
 <?php
 include_once './app/models/producto.model.php';
-//include_once './app/views/producto.view.php';
-include_once './app/models/categoria.model.php';
 require_once './app/views/json.view.php';
 
 class ProductoController
 {
     private $modelProducto;
     private $view;
-    private $modelCategoria;
 
     public function __construct()
     {
         $this->modelProducto = new ProductoModel();
         $this->view = new JSONView();
-        $this->modelCategoria = new CategoriaModel();
     }
 
     public function getProductos($req, $res)
     {
-
+        //ordenamiento por atibuto
         $orderBy = false;
-        if (isset($req->query->orderBy))
+        $direccion = null;
+        if (isset($req->query->orderBy)) {
             $orderBy = $req->query->orderBy;
-
+            if (isset($req->query->direccion))
+                $direccion = $req->query->direccion;
+        }
         //Paginacion
         $pagina = false;
         $limite = false;
@@ -31,7 +30,6 @@ class ProductoController
             $pagina = $req->query->pagina;
             $limite = $req->query->limite;
         }
-
         //filtros 
         $filtro = false;
         $valor = false;
@@ -40,8 +38,7 @@ class ProductoController
             $valor = $req->query->valor;
         }
 
-
-        $productos = $this->modelProducto->getProductos($orderBy, $pagina, $limite, $filtro, $valor);
+        $productos = $this->modelProducto->getProductos($orderBy, $direccion, $pagina, $limite, $filtro, $valor);
         return $this->view->response($productos);
     }
 
@@ -96,11 +93,11 @@ class ProductoController
         if (!$producto) {
             return $this->view->response("El producto con el id=$id no existe", 404);
         }
-        if (empty($req->body->nombre)  || empty($req->body->precio) || empty($req->body->marca) || empty($req->body->descripcion) || empty($req->body->URL_imagen)) {
+        if (empty($req->body->nombre)  || empty($req->body->precio) || empty($req->body->marca) || empty($req->body->descripcion) || empty($req->body->URL_imagen) || empty($req->body->categoria)) {
             return $this->view->response('Faltan completar datos', 400);
         }
         $nombre = $req->body->nombre;
-        $categoria = $req->body->categoria;
+        $categoria = $req->body->categoria; //ID_Categorias
         $precio = $req->body->precio;
         $marca = $req->body->marca;
         $descripcion = $req->body->descripcion;

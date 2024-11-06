@@ -3,10 +3,10 @@ require_once 'app/models/model.php';
 class ProductoModel extends Model
 {
 
-    public function getProductos($orderBy = false, $pagina, $limite, $filtro, $valor)
+    public function getProductos($orderBy = false, $direccion = " ASC", $pagina, $limite, $filtro, $valor)
     {
         $sql = 'SELECT * FROM productos';
-
+        //filtro , $filtro es el atributo y $valor es el valor
         if ($filtro && $valor) {
             switch ($filtro) {
                 case 'Nombre':
@@ -20,6 +20,8 @@ class ProductoModel extends Model
                     break;
                 case 'Marca':
                     $sql .= ' WHERE Marca LIKE :Marca';
+                case 'Categoria':
+                    $sql .= ' WHERE ID_Categorias LIKE :Categoria';
                     break;
             }
         }
@@ -28,7 +30,7 @@ class ProductoModel extends Model
         if ($orderBy) {
             switch ($orderBy) {
                 case 'Nombre':
-                    $sql .= ' ORDER BY :Nombre';
+                    $sql .= ' ORDER BY Nombre';
                     break;
                 case 'Descripcion':
                     $sql .= ' ORDER BY Descripcion';
@@ -40,13 +42,18 @@ class ProductoModel extends Model
                     $sql .= ' ORDER BY Marca';
                     break;
             }
+            if ($direccion === 'DESC') {
+                $sql .= ' DESC';
+            } else {
+                $sql .= ' ASC';
+            }
         }
+
         //paginacion        
         if ($pagina && $limite) {
             $desplazamiento = ($pagina - 1) * $limite;
             $sql .= ' LIMIT :limite OFFSET :desplazamiento';
         }
-
 
         $query = $this->db->prepare($sql);
         //usamos bindparam() para evitar la inyeccion sql por que LIMIT y OFFSET no deja poner ? y pasarlo en el execute. 
@@ -65,8 +72,8 @@ class ProductoModel extends Model
             $query->bindParam(':limite', $limite, PDO::PARAM_INT);
             $query->bindParam(':desplazamiento', $desplazamiento, PDO::PARAM_INT);
         }
-        $query->execute();
 
+        $query->execute();
         $productos = $query->fetchAll(PDO::FETCH_OBJ);
         return $productos;
     }
