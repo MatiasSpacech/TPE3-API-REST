@@ -20,26 +20,38 @@ class ProductoController
     public function getProductos($req, $res)
     {
 
-        $productos = $this->modelProducto->getProductos();
-        //$categorias = $this->modelCategoria->getCategorias();
+        $orderBy = false;
+        if (isset($req->query->orderBy))
+            $orderBy = $req->query->orderBy;
+
+        //Paginacion
+        $pagina = false;
+        $limite = false;
+        if (isset($req->query->pagina) && is_numeric($req->query->pagina) && isset($req->query->limite) && is_numeric($req->query->limite)) {
+            $pagina = $req->query->pagina;
+            $limite = $req->query->limite;
+        }
+
+        //filtros 
+        $filtro = false;
+        $valor = false;
+        if ((isset($req->query->filtro)) && (isset($req->query->valor))) {
+            $filtro = $req->query->filtro;
+            $valor = $req->query->valor;
+        }
+
+
+        $productos = $this->modelProducto->getProductos($orderBy, $pagina, $limite, $filtro, $valor);
         return $this->view->response($productos);
     }
-    /*
-    public function detalleProducto($id){
-        $producto = $this->modelProducto->getProducto($id);
-        return $this->view->verDetalle($producto);
 
-    }
-*/
     public function getProducto($req, $res)
     {
         $id = $req->params->id;
         $producto = $this->modelProducto->getProducto($id);
-        //$categorias = $this->modelCategoria->getCategorias();
         if (!$producto) {
             return $this->view->response("El producto con el id=$id no existe", 404);
         }
-
         return $this->view->response($producto);
     }
 
@@ -47,13 +59,16 @@ class ProductoController
 
     public function createProducto($req, $res)
     {
+        if (!$res->user) {
+            return $this->view->response("No autorizado", 401);
+        }
 
         if (empty($req->body->nombre)  || empty($req->body->precio) || empty($req->body->marca) || empty($req->body->descripcion) || empty($req->body->URL_imagen)) {
             return $this->view->response('Faltan completar datos', 400);
         }
 
         $nombre = $req->body->nombre;
-        $categoria = 1; //$req->body->categoria; preguntar foraneas
+        $categoria = $req->body->categoria;
         $precio = $req->body->precio;
         $marca = $req->body->marca;
         $descripcion = $req->body->descripcion;
@@ -68,14 +83,13 @@ class ProductoController
         $producto = $this->modelProducto->getProducto($id);
         return $this->view->response($producto, 201);
     }
-    /*public function mostrarAdmin(){
-        $productos = $this->modelProducto->getProductos();
-        $categorias = $this->modelCategoria->getCategorias();
-        return $this->view->verPanelAdmin($productos,$categorias);
-    }
-    */
+
     public function updateProducto($req, $res)
     {
+        if (!$res->user) {
+            return $this->view->response("No autorizado", 401);
+        }
+
         $id = $req->params->id;
         $producto = $this->modelProducto->getProducto($id);
 
@@ -86,7 +100,7 @@ class ProductoController
             return $this->view->response('Faltan completar datos', 400);
         }
         $nombre = $req->body->nombre;
-        $categoria = 1; //$req->body->categoria; preguntar foraneas
+        $categoria = $req->body->categoria;
         $precio = $req->body->precio;
         $marca = $req->body->marca;
         $descripcion = $req->body->descripcion;
@@ -96,16 +110,12 @@ class ProductoController
         // obtengo la tarea modificada y la devuelvo en la respuesta
         $producto = $this->modelProducto->getProducto($id);
         $this->view->response($producto, 200);
-
-        /*if($this->modelProducto->getProducto($id)){
-            $this->modelProducto->editarProducto($nombre, $descripcion, $precio, $marca, $URL_imagen, $categoria, $id);
-        }
-        else
-            return $this->view->mostrarError('No existe el producto');
-        header('Location: ' . BASE_URL);*/
     }
     public function deleteProducto($req, $res)
     {
+        if (!$res->user) {
+            return $this->view->response("No autorizado", 401);
+        }
         $id = $req->params->id;
         $producto = $this->modelProducto->getProducto($id);
         if (!$producto) {
