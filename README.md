@@ -41,9 +41,21 @@ La tabla Marcas contiene ID_Marcas(Primary Key), nombre y descripcion.
       - `orderBy`: Campo por el que se desea ordenar los resultados. Los campos válidos pueden incluir:
 
         - `Nombre`: Ordena los productos por nombre.
+          ```http
+          GET tpespecialrest/api/productos?orderBy=precio
+          ```
         - `Descripcion`: Ordena los productos por descripcion.
+          ```http
+          GET tpespecialrest/api/productos?orderBy=Descripcion.
+          ```
         - `Precio`: Ordena los productos por precio.
+          ```http
+          GET tpespecialrest/api/productos?orderBy=Precio
+          ```
         - `Marca`: Ordena los productos por Marca.
+          ```http
+          GET tpespecialrest/api/productos?orderBy=Marca
+          ```
 
       - `direccion`: Dirección de orden para el campo especificado en `orderBy`. Puede ser:
         - `ASC`: Orden ascendente (por defecto).
@@ -53,7 +65,7 @@ La tabla Marcas contiene ID_Marcas(Primary Key), nombre y descripcion.
       Para obtener todos los productos ordenados por precio en orden descendente:
 
       ```http
-      GET /api/boleto?orderBy=precio&orderDirection=DESC
+      GET tpespecialrest/api/productos?orderBy=Precio&direccion=DESC
       ```
 
     - **Filtrado**:
