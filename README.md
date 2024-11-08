@@ -118,6 +118,7 @@ Este proyecto cuenta con una API REST que permite la consulta, modificación, el
     - `nombre`: Nombre del producto.
     - `descripcion`: Descripcion del producto.
     - `precio`: Precio del producto
+    - `marca`: Marca del producto
     - `categoria`: Categoria del producto. (valor numerico)
     - `URL_imagen`: Url de la imagen del producto.
 
