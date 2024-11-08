@@ -17,6 +17,5 @@ $router->addRoute('productos',                'POST',    'ProductoController',  
 $router->addRoute('productos/:id',            'PUT',     'ProductoController',        'updateProducto');
 
 $router->addRoute('usuarios/token',            'GET',     'UserApiController',   'getToken');
-//$router->addRoute('tareas/:id/finalizada'  , 'PUT',     'TaskApiController',     'setFinalize');
 
 $router->route($_GET['resource'], $_SERVER['REQUEST_METHOD']);

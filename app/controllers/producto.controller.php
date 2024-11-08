@@ -60,7 +60,7 @@ class ProductoController
             return $this->view->response("No autorizado", 401);
         }
 
-        if (empty($req->body->nombre)  || empty($req->body->precio) || empty($req->body->marca) || empty($req->body->descripcion) || empty($req->body->URL_imagen)) {
+        if (empty($req->body->nombre)  || empty($req->body->precio) || empty($req->body->marca) || empty($req->body->descripcion) || empty($req->body->URL_imagen) || empty($req->body->categoria)) {
             return $this->view->response('Faltan completar datos', 400);
         }
 

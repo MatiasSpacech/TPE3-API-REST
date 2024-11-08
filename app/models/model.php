@@ -4,8 +4,6 @@ require_once 'config.php';
         protected $db;
 
         function __construct() {
-            //$this->db = new PDO('mysql:host='. MYSQL_HOST .';dbname='. MYSQL_DB .';charset=utf8', MYSQL_USER, MYSQL_PASS);
-            //$this->deploy();
             // Conexión al servidor MySQL sin especificar una base de datos
             $this->db = new PDO('mysql:host='. MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
             // Crear la base de datos si no existe
