@@ -28,9 +28,9 @@ Este proyecto cuenta con una API REST que permite la consulta, modificación, el
 
 ---
 
-## 🚏 Endpoints
+## Endpoints
 
-### 🎫 Productos
+### Productos
 
 - **GET** `tpespecialrest/api/productos`  
   Devuelve todos los productos disponibles en la base de datos, permitiendo opcionalmente aplicar filtrado y ordenamiento a los resultados.
