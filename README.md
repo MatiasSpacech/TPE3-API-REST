@@ -22,6 +22,12 @@ Este proyecto cuenta con una API REST que permite la consulta, modificación, el
 
 ---
 
+## Frontend basico
+
+Hicimos un frontend basico que consume la api, solo lista todos los productos, pudiendo filtrar, ordenar y paginar.
+
+`index.html`
+
 ### URL de Ejemplo
 
 `tpespecialrest/api/productos`
@@ -158,7 +164,7 @@ Este proyecto cuenta con una API REST que permite la consulta, modificación, el
 
 Para acceder a recursos protegidos, los usuarios deben autenticarse utilizando un **token**.
 
-- **POST** `/usuarios/token`  
+- **GET** `/usuarios/token`  
   Este endpoint permite a los usuarios obtener un token JWT. Para utilizarlo, se deben enviar las credenciales en el encabezado de la solicitud en formato Base64 (usuario:contraseña).
 
   - **iniciar sesión**:

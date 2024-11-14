@@ -1,0 +1,21 @@
+body {
+    background-color: #1a1a1a;
+    color: #fff;
+}
+.navbar, .footer {
+    background-color: #333;
+}
+.navbar-brand, .nav-link, .footer {
+    color: #0f0;
+}
+.footer {
+    padding: 10px 0;
+    text-align: center;
+}
+.card{
+    color: black;
+}
+form{
+    margin: 10px;
+    
+}
